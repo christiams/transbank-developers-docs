@@ -353,6 +353,122 @@ DATO                    | LARGO     | COMENTARIO
 `<ETX>`                 |  1        | Indica el fin de texto o comando <br><i>Valor hexadecimal</i>: `0x03`
 `<LRC>`                 |  1        | Resultado del cálculo (byte) `XOR` del mensaje
 
+### Mensaje de Detalle de Ventas
+
+Este comando debe ser gatillado por la caja para solicitar al POS todas las transacciones que se han realizado y permanecen aún en la memoria del POS.
+
+El comando de Detalle de Ventas soporte los siguientes parámetros que pueden ser enviados desde la caja:
+
+<aside class="notice">
+<strong>Detalle a la Caja:</strong> Valor enviado al POS, indica si el POS realizará sólo la impresión del detalle de ventas o debe enviar el detalle de ventas a la Caja (transacción por transacción).
+</aside>
+
+<div class="language-simple" data-multiple-language></div>
+
+```csharp
+using Transbank.POS;
+using Transbank.POS.Responses;
+//...
+Details[] response = POS.Instance.Details(0);
+```
+
+```c
+#include "transbank.h"
+#include "transbank_serial_utils.h"
+//...
+char *response = sales_detail(1);
+```
+
+El resultado de la transacción detalle de venta devuelve en secuencia la lista de todas las transacciones realizadas y que aún permanecen en la memoria del **POS**, se entrega como un arreglo del tipo `DetailResponse[]` o un `char*` en el caso de la librería C. Si ocurre algún error al ejecutar la acción en el POS se lanzará una excepción del tipo `TransbankSalesDetailException`.
+
+```json
+{
+  "Command": 261,
+  "ResponseCode": 00,
+  "CommerceCode": 550062700310,
+  "TerminalId": "ABCD1234",
+  "Ticket": "ABC123",
+  "AutorizationCode": "ABC123",
+  "Ammount": 2500,
+  "Last4Digits": 9876,
+  "OperationNumber": 123456,
+  "CardType": "DB",
+  "AccountingDate": "00-00-00",
+  "AccountNumber": "12345678",
+  "CardAbbr": "DB",
+  "TransactionDate": "24062019",
+  "TransactionTime": "153500",
+  "EmployeeId": 1234,
+  "Tip": 1500,
+  "FeeAmount": 0,
+  "FeeNumber": 0,
+}
+```
+
+<img class="td_img-night" src="/images/referencia/posintegrado/diagrama-detalle-venta.png" alt="Diagrama de Detalle de Venta">
+
+#### Solicitud de Detalle de Venta
+
+DATO                      | LARGO     | Comentario
+------                    | ------    | ------
+`<STX>`                   | 1         | Indica el inicio de texto o comando <br><i>Valor hexadecimal</i>: `0x02`
+`Comando`                 | 4         | <i>Valor ASCII</i>: `0260` <br><i>Valor hexadecimal</i>: `0x30 0x32 0x36 0x30`
+`Separador`               | 1         | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Detalle de la Caja`      | 1         | Valor Numérico
+`Separador`               | 1         | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`<ETX>`                   | 1         | Indica el fin de texto o comando <br><i>Valor hexadecimal</i>: `0x03`
+`<LRC>`                   | 1         | Resultado del cálculo (byte) `XOR` del mensaje
+
+*Mensaje* en <i>ASCII</i>: `<STX>0260|1|<ETX><LRC>`
+
+*Mensaje* en <i>Hexadecimal</i>: `{0x02, 0x30, 0x32, 0x36, 0x30, 0x7c, 0x31, 0x7c, 0x03, 0x36}`
+
+#### Respuesta de Detalle de Venta
+
+DATO                    | LARGO     | COMENTARIO
+------                  | ------    | ------
+`<STX>`                 |  1        | Indica inicio de texto o comando <br><i>Valor hexadecimal</i>: `0x02`
+`Comando`               |  4        | <i>Valor ASCII</i>:  `0260` <br><i>Valor hexadecimal</i>: `0x30 0x32 0x36 0x31`
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Código Respuesta`      |  2        | Valor Numérico
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Código de comercio`    | 12        | Valor Numérico
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Terminal ID`           |  8        | Valor Alfanumérico
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Ticket`                |  6        | Valor ASCII, Número de boleta o ticket
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Código de Autorización`|  6        | Valor Alfanumérico
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Monto`                 |  9        | Valor Numérico <br><i>Largo máximo</i>: 9 <br><i>Largo mínimo</i>: 1
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Últimos 4 Digitos`     |  4        | Valor Numérico **(Opcional)** <br><i>Largo máximo</i>: 4 <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Número Operación`      |  6        | Valor Numérico, Correlativo de Transacción del POS **(Opcional)** <br><i>Largo máximo</i>: 6 <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Tipo de Tarjeta`       |  2        | Valor ASCII <br><i>CR</i>: Crédito <br><i>DB</i>: Débito
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Fecha Contable`        |  6        | Valor ASCII. Se utiliza solo con ventas Débito **(Opcional)**
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Número de Cuenta`      | 19        | Valor ASCII. Se utiliza solo con ventas Débito **(Opcional)** <br><i>Largo máximo</i>: 19 <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Abreviación Tarjeta`   |  2        | Valor ASCII **(Opcional)** <br>[Ver Tabla de abreviación de Tarjetas](/referencia/posintegrado#tabla-de-abreviacion-de-tarjetas)
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Fecha de Transacción`  |  2        | Valor ASCII **(Opcional)** <br><i>Formato</i>: `DDMMAAAA`
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Hora de Transacción`   |  6        | Valor ASCII **(Opcional)** <br><i> Formato</i>: `HHMMSS`
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Empleado`              |  4        | Valor Numérico **(Opcional)** <br><i>Largo máximo</i>: 4</i> <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Propina`               |  9        | Valor Numérico <br><i>Largo máximo</i>: 9 </i> <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Monto Cuota`           |  9        | Valor Numérico **(Opcional)** <br><i>Largo máximo</i>: 9 <br><i>Largo mínimo</i>: 0
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`Número Cuotas`         |  2        | Valor Numérico <br><i>Largo máximo</i>: 2 <br><i>Largo mínimo</i>: 1
+`Separador`             |  1        | <i>Valor ASCII</i>: <code>&#124;</code> <br><i>Valor hexadecimal</i>: `0x7c`
+`<ETX>`                 |  1        | Indica el fin de texto o comando <br><i>Valor hexadecimal</i>: `0x03`
+`<LRC>`                 |  1        | Resultado del cálculo (byte) `XOR` del mensaje
+
 ### Mensaje de Anulación
 
 Esta transacción siempre será responsabilidad de la caja y es quien decide cuando realizar una anulación.

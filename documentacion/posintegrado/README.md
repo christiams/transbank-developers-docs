@@ -238,6 +238,58 @@ El resultado de la transacción última venta devuelve los mismos datos que una 
 "Tip": 1500
 ```
 
+### Transacción de Detalle de Ventas
+
+Este comando debe ser gatillado por la caja para solicitar al POS todas las transacciones que se han realizado y permanecen aún en la memoria del POS.
+
+El comando de Detalle de Ventas soporte los siguientes parámetros que pueden ser enviados desde la caja:
+
+<aside class="notice">
+<strong>Detalle a la Caja:</strong> Valor enviado al POS, indica si el POS realizará sólo la impresión del detalle de ventas o debe enviar el detalle de ventas a la Caja (transacción por transacción).
+</aside>
+
+<div class="language-simple" data-multiple-language></div>
+
+```csharp
+using Transbank.POS;
+using Transbank.POS.Responses;
+//...
+Details[] response = POS.Instance.Details(0);
+```
+
+```c
+#include "transbank.h"
+#include "transbank_serial_utils.h"
+//...
+char *response = sales_detail(1);
+```
+
+El resultado de la transacción detalle de venta devuelve en secuencia la lista de todas las transacciones realizadas y que aún permanecen en la memoria del **POS**, se entrega como un arreglo del tipo `DetailResponse[]` o un `char*` en el caso de la librería C. Si ocurre algún error al ejecutar la acción en el POS se lanzará una excepción del tipo `TransbankSalesDetailException`.
+
+```json
+{
+  "Command": 261,
+  "ResponseCode": 00,
+  "CommerceCode": 550062700310,
+  "TerminalId": "ABCD1234",
+  "Ticket": "ABC123",
+  "AutorizationCode": "ABC123",
+  "Ammount": 2500,
+  "Last4Digits": 9876,
+  "OperationNumber": 123456,
+  "CardType": "DB",
+  "AccountingDate": "00-00-00",
+  "AccountNumber": "12345678",
+  "CardAbbr": "DB",
+  "TransactionDate": "24062019",
+  "TransactionTime": "153500",
+  "EmployeeId": 1234,
+  "Tip": 1500,
+  "FeeAmount": 0,
+  "FeeNumber": 0,
+}
+```
+
 ### Transacción de Anulación
 
 Esta transacción siempre será responsabilidad de la caja y es quien decide cuando realizar una anulación.
