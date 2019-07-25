@@ -75,7 +75,10 @@ el ambiente de integración](/documentacion/como_empezar#ambientes).
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+use Transbank\Webpay\PatPassByWebpay;
+
+PatPassByWebpay::setApiKey('apikey');
+PatPassByWebpay::setCommerceCode('commercecode');
 ```
 
 ```csharp
@@ -121,7 +124,7 @@ comercio](https://github.com/TransbankDevelopers/transbank-webpay-credenciales/t
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+
 ```
 
 ```csharp
@@ -147,7 +150,7 @@ comercio](https://github.com/TransbankDevelopers/transbank-webpay-credenciales/t
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+
 ```
 
 ```csharp
@@ -236,6 +239,15 @@ Nota que el nombre de las variables recibidas es diferente. En lugar de `token_w
    este caso debe obtener una excepción, pues el pago fue abortado.
 10. El comercio debe informar al tarjetahabiente que su pago no se completó.
 
+
+
+
+
+
+
+
+
+
 ### Crear una transacción PatPass by Webpay Normal
 
 Para crear una transacción basta llamar al método `Transaction.create()`
@@ -253,7 +265,32 @@ Es importante considerar que una vez invocado este método, el token que es ent
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+  $params = [
+    "buy_order" => "123456613"
+    "session_id" => "session123456"
+    "amount" => "1000"
+    "return_url" => "http://0.0.0.0:8000/patpass_by_webpay/returnUrl"
+    "details" => 
+        [
+            "service_id" => "serviceid24"
+            "card_holder_id" => "cardholderid123"
+            "card_holder_name" => "pepito"
+            "card_holder_last_name1" => "Perez"
+            "card_holder_last_name2" => "Gonzalez"
+            "card_holder_mail" => "info@continuum.cl"
+            "cellphone_number" => "123456789"
+            "expiration_date" => "2022-07-24"
+            "commerce_mail" => "pepito@continuum.cl"
+            "uf_flag" => false
+        ]
+  ]
+  
+  
+  Transbank\Webpay\PatPassByWebpay\Transaction::create($params['buy_order'],
+                                                       $params['session_id'],
+                                                       $params['amount'],
+                                                       $params['return_url'],
+                                                       $params['details']); 
 ```
 
 ```csharp
@@ -318,7 +355,11 @@ wpmDetail.ufFlag <br><i> Boolean </i> | Valor en true indica que el monto enviad
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+   Transbank\Webpay\PatPassByWebpay\TransactionCreateResponse Object
+(
+    [token] => e64550c6a28d0e2c8622bd23d4f203e89949a6d9859cf108aa406a358738ae4a
+    [url] => https://webpay3gint.transbank.cl/webpayserver/initTransaction
+)
 ```
 
 ```csharp
@@ -361,7 +402,9 @@ Permite obtener el resultado de la transacción una vez que Webpay ha resuelto 
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+  
+$token = 'token dado por Transbank despues de crear la transacción';
+$resp = Transbank\Webpay\PatPassByWebpay\Transaction::commit($token);
 ```
 
 ```csharp
@@ -396,7 +439,21 @@ token  <br> <i> String </i> | Token de la transacción. Largo: 64.
 ```
 
 ```php
-// Este SDK aún no se encuentra disponible
+ Transbank\Webpay\PatPassByWebpay\TransactionCommitResponse
+ (
+     [vci] => "TSY"
+     [amount] => 1000
+     [status] => "AUTHORIZED"
+     [buyOrder] => "123456613"
+     [sessionId] => "session123456"
+     [cardNumber] => "6623"
+     [accountingDate] => "0724"
+     [transactionDate] => "2019-07-24T19:10:23.834Z"
+     [authorizationCode] => "1213"
+     [paymentTypeCode] => "VN"
+     [responseCode] => 0
+     [installmentsNumber] => 0
+ )
 ```
 
 ```csharp
