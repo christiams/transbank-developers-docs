@@ -178,7 +178,9 @@ Webpay Transacción Completa Diferida | `Próximamente...` | `Próximamente...`
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+Transaction.Create(buyOrder, sessionId, amount, returnUrl);
 ```
 
 ```ruby
@@ -315,7 +317,9 @@ token es caducado y no podrá ser utilizado en un pago.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+Transaction.Create(buyOrder, sessionId, amount, returnUrl);
 ```
 
 ```ruby
@@ -361,7 +365,10 @@ return_url  <br> <i> String </i> | URL del comercio, a la cual Webpay redireccio
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Token=e7698f3021f3b252dd46b0174e19e9c8af4d6162c7eb944628db4b98059ff1fc, 
+  Url=https://webpay3gint.transbank.cl/webpayserver/initTransaction
+}
 ```
 
 ```ruby
@@ -406,7 +413,9 @@ Permite confirmar y obtener el resultado de la transacción una vez que Webpay 
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+Transaction.Commit(token)
 ```
 
 ```ruby
@@ -441,7 +450,22 @@ token  <br> <i> String </i> | Token de la transacción. Largo: 64.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Vci=TSY, Amount=973036, 
+  Status=AUTHORIZED, 
+  BuyOrder=853691, 
+  SessionId=550875403, 
+  CardDetail=CardNumber=6623, 
+  AccountingDate=1203, 
+  TransactionDate=12/3/2019 2:53:39 PM, 
+  AuthorizationCode=1213, 
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsAmount=0, 
+  InstallmentsNumber=0,
+  Balance=0
+
+}
 ```
 
 ```ruby
@@ -510,7 +534,9 @@ Obtiene resultado de transacción a partir de un token.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+Transaction.Status(token);
 ```
 
 ```ruby
@@ -545,7 +571,21 @@ token  <br> <i> String </i> | Token de la transacción. Largo: 64.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Vci=TSY, Amount=973036, 
+  Status=AUTHORIZED, 
+  BuyOrder=853691, 
+  SessionId=550875403, 
+  CardDetail=CardNumber=6623, 
+  AccountingDate=1203, 
+  TransactionDate=12/3/2019 2:53:39 PM, 
+  AuthorizationCode=1213, 
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsAmount=0, 
+  InstallmentsNumber=0, 
+  Balance=0
+}
 ```
 
 ```ruby
@@ -637,7 +677,9 @@ El método `Transaction.refund()` debe ser invocado siempre indicando el códi
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+Transaction.Refund(token, refundAmount);
 ```
 
 ```ruby
@@ -676,7 +718,14 @@ amount  <br> <i> Decimal </i> | (Opcional) Monto que se desea anular de la trans
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Type=NULLIFIED, 
+  AuthorizationCode=104420, 
+  AuthorizationDate=12/3/2019 2:59:52 PM,
+  NullifiedAmount=500.0, 
+  Balance=516786.0, 
+  ResponseCode=0
+}
 ```
 
 ```ruby
