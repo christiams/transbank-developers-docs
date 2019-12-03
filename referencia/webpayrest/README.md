@@ -833,7 +833,9 @@ token es caducado y no podrá ser utilizado en un pago.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+MallTransaction.Create(buyOrder, sessionId, returnUrl, transactions);
 ```
 
 ```ruby
@@ -893,7 +895,11 @@ details [].buy_order  <br> <i> String </i> | Orden de compra de la tienda del m
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Token=e6af07865102e3ae22d1045cc5ef575780cae62e0d51035ad7b75f2bd86bcec0, 
+  Url=https://webpay3gint.transbank.cl/webpayserver/initTransaction
+
+}
 ```
 
 ```ruby
@@ -937,7 +943,9 @@ una vez que Webpay ha resueltosu autorización financiera.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+MallTransaction.Commit(token);
 ```
 
 ```ruby
@@ -972,7 +980,30 @@ token  <br> <i> String </i> | Token de la transacción. Largo: 64.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  BuyOrder=8113799, 
+  SessionId=7335063, 
+  Vci=TSY, 
+  CardDetail=CardNumber=6623, 
+  AccountingDate=1203, 
+  TransactionDate=12/3/2019 3:35:14 PM, 
+  Details= {BuyOrder=6233179, 
+  CommerceCode=597055555536, 
+  Amount=2299352, 
+  Status=AUTHORIZED, 
+  AuthorizationCode=1213,
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsNumber=0, 
+  BuyOrder=28573, 
+  CommerceCode=597055555537,
+  Amount=9772006, 
+  Status=AUTHORIZED, 
+  AuthorizationCode=1213,
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsNumber=0
+}
 ```
 
 ```ruby
@@ -1048,7 +1079,9 @@ Obtiene resultado de transacción a partir de un token.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+MallTransaction.Status(token);
 ```
 
 ```ruby
@@ -1083,7 +1116,30 @@ token  <br> <i> String </i> | Token de la transacción. Largo: 64.
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  BuyOrder=8113799, 
+  SessionId=7335063, 
+  Vci=TSY, 
+  CardDetail=CardNumber=6623, 
+  AccountingDate=1203, 
+  TransactionDate=12/3/2019 3:35:14 PM, 
+  Details= {BuyOrder=6233179, 
+  CommerceCode=597055555536, 
+  Amount=2299352, 
+  Status=AUTHORIZED, 
+  AuthorizationCode=1213,
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsNumber=0, 
+  BuyOrder=28573, 
+  CommerceCode=597055555537,
+  Amount=9772006, 
+  Status=AUTHORIZED, 
+  AuthorizationCode=1213,
+  PaymentTypeCode=VN, 
+  ResponseCode=0, 
+  InstallmentsNumber=0
+}
 ```
 
 ```ruby
@@ -1181,7 +1237,9 @@ El método `Transaction.refund()` debe ser invocado siempre indicando el códi
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+using Transbank.Webpay.WebpayPlus;
+
+MallTransaction.Refund(token, buyOrder, commerceCode, amount);
 ```
 
 ```ruby
@@ -1226,7 +1284,14 @@ commerce_id  <br> <i> Number </i> | (Opcional) Tienda mall que realizó la tran
 ```
 
 ```csharp
-// Este SDK aún no se encuentra disponible
+{
+  Type=REVERSED, 
+  AuthorizationCode=, 
+  AuthorizationDate=1/1/0001 12:00:00 AM, 
+  NullifiedAmount=0, 
+  Balance=0, 
+  ResponseCode=0
+}
 ```
 
 ```ruby
