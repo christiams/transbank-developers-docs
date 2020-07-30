@@ -2730,7 +2730,7 @@ transacción.
 ```
 
 ```http
-POST /rswebpaytransaction/api/oneclick/mall/v1_0/transactions/capture
+PUT /rswebpaytransaction/api/oneclick/mall/v1_0/transactions/capture
 Tbk-Api-Key-Id: Próximamente...
 Tbk-Api-Key-Secret: Próximamente...
 Content-Type: application/json
